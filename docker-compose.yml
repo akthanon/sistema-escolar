@@ -1,0 +1,17 @@
+services:
+  web:
+    build: .
+    container_name: escuela_asistencias
+    ports:
+      - "28580:5000"
+    volumes:
+      - app_data:/app/data
+      - uploads_data:/app/uploads
+    environment:
+      - SECRET_KEY=mi-clave-secreta-cambiar-en-produccion
+      - TOKEN_SECRET=otra-clave-secreta-cambiar
+    restart: always
+
+volumes:
+  app_data:
+  uploads_data:

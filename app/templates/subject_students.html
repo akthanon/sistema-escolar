@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Estudiantes inscritos en "{{ subject.name }}"</h2>
+{% if students %}
+<ul class="list-group">
+    {% for student in students %}
+    <li class="list-group-item">{{ student.first_name }} {{ student.last_name }} ({{ student.username }})</li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>No hay estudiantes inscritos.</p>
+{% endif %}
+<a href="{{ url_for('tasks.admin_subjects') }}" class="btn btn-secondary mt-3">Volver</a>
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Gestión de Materias</h2>
+<a href="{{ url_for('tasks.create_subject') }}" class="btn btn-primary mb-3">Crear nueva materia</a>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for subject in subjects %}
+        <tr>
+            <td>{{ subject.name }}</td>
+            <td>{{ subject.description or '' }}</td>
+            <td>
+                <a href="{{ url_for('tasks.subject_students', subject_id=subject.id) }}" class="btn btn-sm btn-info">Ver estudiantes</a>
+                <form method="post" action="{{ url_for('tasks.delete_subject', subject_id=subject.id) }}" style="display:inline;"
+                      onsubmit="return confirm('¿Eliminar esta materia? Solo si no tiene tareas.');">
+                    <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
+                </form>
+            </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="3">No hay materias creadas</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

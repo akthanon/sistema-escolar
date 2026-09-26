@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Código QR para asistencia</h2>
+<p><strong>Slot actual:</strong> {{ slot }}</p>
+<p><strong>Token:</strong> {{ token }}</p>
+<div class="text-center">
+    <img src="data:image/png;base64,{{ qr_image }}" alt="QR" class="img-fluid" style="max-width: 300px;">
+</div>
+<p class="mt-3">Escanea este código QR con tu dispositivo para registrar tu asistencia.</p>
+<p>URL: <a href="{{ qr_url }}">{{ qr_url }}</a></p>
+{% endblock %}

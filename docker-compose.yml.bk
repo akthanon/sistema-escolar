@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    container_name: escuela_asistencias
+    ports:
+      - "28580:5000"
+    volumes:
+      # Persistir la base de datos SQLite
+      - ./data/school.db:/app/school.db
+      # Persistir los archivos subidos (PDFs)
+      - ./data/uploads:/app/uploads
+    environment:
+      - SECRET_KEY=mi-clave-secreta-cambiar-en-produccion
+      - TOKEN_SECRET=otra-clave-secreta-cambiar
+    restart: always

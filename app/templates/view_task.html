@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h2>{{ task.title }}</h2>
+        <p><strong>Materia:</strong> {{ task.subject_ref.name }}</p>
+        <p><strong>Fecha límite:</strong> {{ task.due_date.strftime('%d/%m/%Y') }}</p>
+    </div>
+    <div class="card-body">
+        <hr>
+        <div class="markdown-content">
+            {{ description_html|safe }}
+        </div>
+    </div>
+    <div class="card-footer">
+        <a href="{{ url_for('tasks.index') }}" class="btn btn-secondary">Volver</a>
+    </div>
+</div>
+{% endblock %}

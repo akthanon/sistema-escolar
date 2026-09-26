@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Gestión de Tareas</h2>
+<a href="{{ url_for('tasks.create_task') }}" class="btn btn-primary mb-3">Crear nueva tarea</a>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Materia</th>
+            <th>Título</th>
+            <th>Fecha límite</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for task in tasks %}
+        <tr>
+            <td>{{ task.subject_ref.name }}</td>
+            <td>{{ task.title }}</td>
+            <td>{{ task.due_date.strftime('%d/%m/%Y') }}</td>
+            <td>
+                <a href="{{ url_for('tasks.view_task', task_id=task.id) }}" class="btn btn-sm btn-info">Ver detalles</a>
+                <a href="{{ url_for('tasks.view_submissions', task_id=task.id) }}" class="btn btn-sm btn-primary">Ver entregas</a>
+                <!-- Botón Eliminar añadido -->
+                <form method="post" action="{{ url_for('tasks.delete_task', task_id=task.id) }}" style="display:inline;"
+                      onsubmit="return confirm('¿Eliminar esta tarea? Se borrarán todas las entregas y archivos.');">
+                    <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
+                </form>
+            </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="4">No hay tareas creadas</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

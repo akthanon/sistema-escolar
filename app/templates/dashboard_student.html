@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Mis Asistencias - {{ date }}</h2>
+<p><strong>Total: {{ total }}</strong></p>
+<ul class="list-group">
+    {% for att in attendances %}
+        <li class="list-group-item">
+            {{ att.date.strftime('%d/%m/%Y') }} - {{ att.timestamp.strftime('%H:%M') }} ({{ att.hour_slot }})
+        </li>
+    {% else %}
+        <li class="list-group-item text-muted">No tienes asistencias registradas.</li>
+    {% endfor %}
+</ul>
+{% endblock %}

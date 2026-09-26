@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Mis Materias</h2>
+<p>Inscríbete o date de baja de las materias para ver sus tareas.</p>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Materia</th>
+            <th>Descripción</th>
+            <th>Acción</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for subject in all_subjects %}
+        <tr>
+            <td>{{ subject.name }}</td>
+            <td>{{ subject.description or '' }}</td>
+            <td>
+                {% if subject.id in my_subject_ids %}
+                <form method="post" action="{{ url_for('tasks.unenroll_subject', subject_id=subject.id) }}" style="display:inline;">
+                    <button type="submit" class="btn btn-sm btn-danger">Darse de baja</button>
+                </form>
+                {% else %}
+                <form method="post" action="{{ url_for('tasks.enroll_subject', subject_id=subject.id) }}" style="display:inline;">
+                    <button type="submit" class="btn btn-sm btn-primary">Inscribirse</button>
+                </form>
+                {% endif %}
+            </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="3">No hay materias disponibles</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+<a href="{{ url_for('tasks.index') }}" class="btn btn-secondary">Volver</a>
+{% endblock %}

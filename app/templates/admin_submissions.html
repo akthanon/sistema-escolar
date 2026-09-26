@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Entregas de "{{ task.title }}" ({{ task.subject_ref.name }})</h2>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Estudiante</th>
+            <th>Archivo</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for student in students %}
+        {% set sub = sub_map.get(student.id) %}
+        <tr>
+            <td>{{ student.first_name }} {{ student.last_name }}</td>
+            <td>
+                {% if sub %}
+                    <a href="{{ url_for('tasks.download_submission', submission_id=sub.id) }}" target="_blank">Ver PDF</a>
+                {% else %}
+                    No subido
+                {% endif %}
+            </td>
+            <td>
+                {% if sub %}
+                    {{ sub.status }}
+                    {% if sub.feedback %}<br><small>{{ sub.feedback }}</small>{% endif %}
+                {% else %}
+                    Sin subir
+                {% endif %}
+            </td>
+            <td>
+                {% if sub and sub.status == 'submitted' %}
+                <form method="post" action="{{ url_for('tasks.update_submission_status', submission_id=sub.id) }}" style="display:inline;">
+                    <input type="hidden" name="action" value="accept">
+                    <button type="submit" class="btn btn-sm btn-success">Aceptar</button>
+                </form>
+                <form method="post" action="{{ url_for('tasks.update_submission_status', submission_id=sub.id) }}" style="display:inline;" onsubmit="return confirm('¿Rechazar? Debes dejar un comentario.');">
+                    <input type="hidden" name="action" value="reject">
+                    <input type="text" name="feedback" placeholder="Comentario" required>
+                    <button type="submit" class="btn btn-sm btn-danger">Rechazar</button>
+                </form>
+                {% elif sub and sub.status == 'accepted' %}
+                <span class="badge bg-success">Aceptada</span>
+                {% elif sub and sub.status == 'rejected' %}
+                <span class="badge bg-danger">Rechazada</span>
+                {% else %}
+                <span class="text-muted">Sin entrega</span>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<a href="{{ url_for('tasks.admin_dashboard') }}" class="btn btn-secondary">Volver</a>
+{% endblock %}

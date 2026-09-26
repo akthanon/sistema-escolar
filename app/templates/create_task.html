@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Crear Nueva Tarea</h2>
+<form method="post">
+
+    <div class="mb-3">
+        <label for="subject_id" class="form-label">Materia</label>
+        <select class="form-select" id="subject_id" name="subject_id" required>
+            <option value="">Selecciona una materia</option>
+            {% for subject in subjects %}
+            <option value="{{ subject.id }}">{{ subject.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label for="title" class="form-label">Título</label>
+        <input type="text" class="form-control" id="title" name="title" required>
+    </div>
+    <div class="mb-3">
+        <label for="description" class="form-label">Descripción (Markdown)</label>
+        <textarea class="form-control" id="description" name="description" rows="5" required></textarea>
+    </div>
+    <div class="mb-3">
+        <label for="due_date" class="form-label">Fecha máxima de entrega</label>
+        <input type="date" class="form-control" id="due_date" name="due_date" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Crear tarea</button>
+    <a href="{{ url_for('tasks.admin_dashboard') }}" class="btn btn-secondary">Cancelar</a>
+</form>
+{% endblock %}

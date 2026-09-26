@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block content %}
+<a href="{{ url_for('tasks.student_subjects') }}" class="btn btn-secondary mb-3">Gestionar materias</a>
+<h2>Mis Tareas</h2>
+<p><strong>Tareas aceptadas:</strong> {{ accepted_count }}</p>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Materia</th>
+            <th>Título</th>
+            <th>Fecha límite</th>
+            <th>Estado</th>
+            <th>Acción</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for task in tasks %}
+        {% set sub = sub_by_task.get(task.id) %}
+        <tr>
+            <td>{{ task.subject_ref.name }}</td>
+            <td>
+                <a href="{{ url_for('tasks.view_task', task_id=task.id) }}">{{ task.title }}</a>
+            </td>
+            <td>{{ task.due_date.strftime('%d/%m/%Y') }}</td>
+            <td>
+                {% if sub %}
+                    {{ sub.status }}
+                    {% if sub.feedback %}<br><span class="text-danger">{{ sub.feedback }}</span>{% endif %}
+                {% else %}
+                    Sin subir
+                {% endif %}
+            </td>
+            <td>
+                {% if sub and sub.status == 'accepted' %}
+                    <span class="text-muted">Aceptada</span>
+                {% else %}
+                    <form method="post" action="{{ url_for('tasks.upload_submission', task_id=task.id) }}" enctype="multipart/form-data">
+                        <input type="file" name="file" accept=".pdf" required>
+                        <button type="submit" class="btn btn-sm btn-primary">
+                            {% if sub %}Reemplazar{% else %}Subir{% endif %}
+                        </button>
+                    </form>
+                {% endif %}
+            </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="5">No hay tareas disponibles</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
